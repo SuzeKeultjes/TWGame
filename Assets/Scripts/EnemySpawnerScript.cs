@@ -12,6 +12,10 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         timer = 0f;
     }
+    private void Start()
+    {
+        SpawnEnemy();
+    }
 
     private void Update()
     {

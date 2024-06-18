@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using System.Collections;
 
 public class Tower : MonoBehaviour
 {
@@ -24,17 +25,23 @@ public class Tower : MonoBehaviour
         }
 
         fireCountdown -= Time.deltaTime;
+        
     }
 
     void TargetEnemy()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, range))
+        //RaycastHit hit;
+        //if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, range))
+        //{
+        //    if (hit.transform.CompareTag("Enemy"))
+        //    {
+        //        Shoot(hit.transform);
+        //    }
+        //}
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+        foreach (var hitCollider in hitColliders)
         {
-            if (hit.transform.CompareTag("Enemy"))
-            {
-                Shoot(hit.transform);
-            }
+            hitCollider.SendMessage("AddDamage");
         }
     }
 
@@ -48,7 +55,7 @@ public class Tower : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(-6.67999983, 3.99000001, -28.9899998, 1);
+        Gizmos.DrawSphere(transform.position, 1);
     }
 
 }
