@@ -25,19 +25,20 @@ public class Tower : MonoBehaviour
         }
 
         fireCountdown -= Time.deltaTime;
-        
+
     }
 
     void TargetEnemy()
     {
-        //RaycastHit hit;
-        //if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, range))
-        //{
-        //    if (hit.transform.CompareTag("Enemy"))
-        //    {
-        //        Shoot(hit.transform);
-        //    }
-        //}
+        RaycastHit hit;
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, range))
+        {
+            if (hit.transform.CompareTag("Enemy"))
+            {
+                Shoot(hit.transform);
+            }
+        }
+
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
         foreach (var hitCollider in hitColliders)
         {
@@ -47,16 +48,10 @@ public class Tower : MonoBehaviour
 
     void Shoot(Transform enemy)
     {
-       Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-       Instantiate(bulletPrefab, firePoint2.position, firePoint2.rotation);
-        
-    }
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        Instantiate(bulletPrefab, firePoint2.position, firePoint2.rotation);
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position, 1);
-    }
-
+    }    
 }
+
 
