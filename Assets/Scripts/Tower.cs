@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UIElements;
 
 public class Tower : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Tower : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     public Transform firePoint2;
+    public LayerMask layer;
 
     private float fireCountdown;
 
@@ -30,20 +32,28 @@ public class Tower : MonoBehaviour
 
     void TargetEnemy()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, range))
-        {
-            if (hit.transform.CompareTag("Enemy"))
-            {
-                Shoot(hit.transform);
-            }
-        }
+        //RaycastHit hit;
+        //if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, range))
+        //{
+        //    if (hit.transform.CompareTag("Enemy"))
+        //    {
+        //        Shoot(hit.transform);
+        //    }
+        //}
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 1f);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, 10f, layer);
+        
         foreach (var hitCollider in hitColliders)
         {
-            hitCollider.SendMessage("AddDamage");
+            Debug.Log(hitCollider.gameObject.name);
+            hitCollider.gameObject.SetActive(true);
+            //hitCollider.SendMessage("AddDamage");
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 10f);
     }
 
     void Shoot(Transform enemy)
